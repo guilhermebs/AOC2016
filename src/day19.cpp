@@ -38,14 +38,13 @@ void solve_pt1()
 
 void solve_pt2(size_t N)
 {
-    std::vector<int> elves_pos(N);
-    std::iota(elves_pos.begin(), elves_pos.end(), 0);
-    auto cur_elve = elves_pos.begin();
+    std::vector<int> elves(N);
+    std::iota(elves.begin(), elves.end(), 1);
+    size_t cur_pos = 0;
     size_t nelves = N;
     while (nelves > 1)
     {
-        auto pos_across = (nelves / 2 + *cur_elve) % nelves;
-        auto elve_across = std::find(elves_pos.begin(), elves_pos.end(), pos_across);
+        auto pos_across = (nelves / 2 + cur_pos) % nelves;
         //std::cout << nelves << std::endl;
         //std::cout << nelves << ": ";
         //for (auto e: elves_pos)
@@ -55,19 +54,12 @@ void solve_pt2(size_t N)
         //std::cout << std::endl;
         //std::cout << *cur_elve << ", " << pos_across << std::endl;
         //std::cout << cur_elve - elves_pos.begin() << ", " << elve_across - elves_pos.begin() << std::endl;
-        *elve_across = -1;
-        for (auto e = elve_across; e < elves_pos.end(); e++)
-            (*e)--;
         nelves--;
-        if (*cur_elve == nelves - 1)
-        {
-            cur_elve = std::find(elves_pos.begin(), elves_pos.end(), 0);
-        } else
-        {
-            cur_elve = std::find(cur_elve, elves_pos.end(), *cur_elve + 1);
-        }
+        for (auto i = pos_across; i < nelves; i++)
+            elves[i] = elves[i + 1];
+        cur_pos = (cur_pos < nelves)? cur_pos + 1: 0;
     }
-    std::cout << "Part 2 solution: " << cur_elve - elves_pos.begin() + 1 << std::endl;
+    std::cout << "Part 2 solution: " << elves[cur_pos] << std::endl;
 }
 
 
@@ -76,10 +68,6 @@ int main()
     auto started = std::chrono::high_resolution_clock::now();
     solve_pt1();
     solve_pt2(5);
-    solve_pt2(50);
-    solve_pt2(500);
-    solve_pt2(5000);
-    solve_pt2(50000);
     auto done = std::chrono::high_resolution_clock::now();
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(done-started).count() << "ms\n";
 
