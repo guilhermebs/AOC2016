@@ -45,21 +45,22 @@ void solve_pt2(size_t N)
     while (nelves > 1)
     {
         auto pos_across = (nelves / 2 + cur_pos) % nelves;
-        //std::cout << nelves << std::endl;
+        if (nelves % 1000 == 0) std::cout << nelves << std::endl;
         //std::cout << nelves << ": ";
-        //for (auto e: elves_pos)
+        //for (auto e: elves)
         //{
         //    std::cout << e << " ";
         //}
         //std::cout << std::endl;
-        //std::cout << *cur_elve << ", " << pos_across << std::endl;
-        //std::cout << cur_elve - elves_pos.begin() << ", " << elve_across - elves_pos.begin() << std::endl;
+        //std::cout << cur_pos << ", " << pos_across << std::endl;
         nelves--;
         for (auto i = pos_across; i < nelves; i++)
             elves[i] = elves[i + 1];
-        cur_pos = (cur_pos < nelves)? cur_pos + 1: 0;
+        elves[nelves] = -1;
+        if (pos_across < cur_pos) cur_pos--;
+        cur_pos = (cur_pos + 1) % nelves;
     }
-    std::cout << "Part 2 solution: " << elves[cur_pos] << std::endl;
+    std::cout << "Part 2 solution: " << elves[0] << std::endl;
 }
 
 
@@ -67,7 +68,7 @@ int main()
 {
     auto started = std::chrono::high_resolution_clock::now();
     solve_pt1();
-    solve_pt2(5);
+    solve_pt2(N_ELVES);
     auto done = std::chrono::high_resolution_clock::now();
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(done-started).count() << "ms\n";
 
