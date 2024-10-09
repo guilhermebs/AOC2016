@@ -98,7 +98,6 @@ void solve_pt1()
         }
     }
     std::vector<int> distances(N_LOC * N_LOC, 0);
-    std::cout << distances.size() << std::endl;
     for (auto &[l1, i1]: locations)
     {
         for ( auto &[l2, i2]: locations)
